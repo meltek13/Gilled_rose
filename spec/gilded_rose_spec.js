@@ -130,7 +130,7 @@ describe("GildedRose shop manager", function () {
     const gildedRose = new Shop(listItems);
     const items = gildedRose.updateQuality();
 
-    var expected = [{ sellIn: null, quality: 6 }];
+    var expected = [{ sellIn: null, quality: 80 }];
 
     expected.forEach(function (testCase, idx) {
       expect(items[idx].quality).toBe(testCase.quality);

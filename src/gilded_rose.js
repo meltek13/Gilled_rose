@@ -6,7 +6,6 @@ class Item {
     this.IsBetterOlder = false;
     this.legendarySulfura = false;
     this.conjured = false;
-    this.DamageQuality = 1;
   }
 
   GetStatus() {
@@ -25,43 +24,49 @@ class Item {
   }
 
   ControlQualityMaxMin() {
-    if (this.quality > 50) this.quality = 50;
-    if (this.quality < 0) this.quality = 0;
+    if (!this.legendarySulfura) {
+      if (this.quality > 50) this.quality = 50;
+      if (this.quality < 0) this.quality = 0;
+    }
   }
 
   ControlSellIn() {
     if (this.IsBetterOlder) {
       if (this.sellIn <= 10 && this.sellIn > 5) {
-        this.DamageQuality = 2;
+        this.quality += 2;
       } else if (this.sellIn <= 5 && this.sellIn >= 0) {
-        this.DamageQuality = 3;
+        this.quality += 3;
       } else if (this.sellIn < 0) {
         this.quality = 0;
-        this.DamageQuality = 0;
+      } else {
+        this.quality += 1;
       }
     } else {
-      if (this.sellIn < 0) {
-        this.DamageQuality = this.DamageQuality * 2;
+      if (this.conjured) {
+        if (this.sellIn < 0) {
+          this.quality -= 4;
+        } else {
+          this.quality -= 2;
+        }
+      } else {
+        if (this.sellIn < 0) {
+          this.quality -= 2;
+        } else {
+          this.quality -= 1;
+        }
       }
     }
   }
 
-  ConjuredProduct() {
-    this.conjured ? (this.DamageQuality = this.DamageQuality * 2) : false;
-  }
-
   OneDayPast() {
     if (this.legendarySulfura) {
-      this.quality += 1;
+      this.quality = 80;
     } else if (this.IsBetterOlder) {
       this.sellIn -= 1;
       this.ControlSellIn();
-      this.quality += this.DamageQuality;
     } else {
-      this.ConjuredProduct();
       this.sellIn -= 1;
       this.ControlSellIn();
-      this.quality -= this.DamageQuality;
     }
     this.ControlQualityMaxMin();
   }
